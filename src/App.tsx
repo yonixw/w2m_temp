@@ -12,6 +12,16 @@ import SideMenu from './components/SideMenu';
 import LoadFileContent from './components/1LoadFiles/LoadFilesContent';
 import EditFileContent from './components/2Edit/EditContent';
 
+//https://dev.to/nicolasrannou/web-workers-in-create-react-app-cra-without-unmounting-4865
+//https://stackoverflow.com/questions/61382521/using-webwoker-with-create-react-app-and-typescript
+import * as Comlink from 'comlink';
+
+/* eslint-disable import/no-webpack-loader-syntax */
+import Worker from 'worker-loader!./WebWorker/ImageJobs';
+import { IWorker } from './WebWorker/ImageJobs';
+const worker = new Worker();
+export const ImageJobs = Comlink.wrap<IWorker>(worker);
+
 const { Header, Content, Footer, Sider } = Layout;
 
 

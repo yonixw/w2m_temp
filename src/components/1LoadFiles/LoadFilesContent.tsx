@@ -9,6 +9,7 @@ import Jimp, { read } from 'jimp';
 import { UploadFile } from 'antd/lib/upload/interface';
 import { resolve } from 'dns';
 import { rejects } from 'assert';
+import { ImageJobs } from '../../App';
 
 const { Dragger } = Upload;
 //https://stackoverflow.com/questions/3590058/does-html5-allow-drag-drop-upload-of-folders-or-a-folder-tree
@@ -83,6 +84,10 @@ export default function LoadFileContent() {
         reader.readAsDataURL(f.originFileObj || (f as unknown as File));
     }
 
+    const web1 = async () =>{
+        await ImageJobs.inc()
+    }
+
     return (
         <>
             <Breadcrumb style={{ margin: '16px 0' }}>
@@ -110,6 +115,7 @@ export default function LoadFileContent() {
                     
                 </Space>
                 <Button onClick={LoadImage}>Load Image</Button>
+                <Button onClick={web1}>WEbWorker</Button>
                 <img src={imgSrc} />
             </div>
         </>
