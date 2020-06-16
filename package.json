@@ -12,11 +12,11 @@
     "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.3.3",
+    "jimp": "^0.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "typescript": "^3.7.5",
-    "wasm-imagemagick": "^1.2.7"
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",

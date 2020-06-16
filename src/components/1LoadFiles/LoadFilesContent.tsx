@@ -5,8 +5,7 @@ import { Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { UploadChangeParam, UploadProps, RcFile } from 'antd/lib/upload';
 
-import { buildInputFile, execute } from 'wasm-imagemagick'
-
+import Jimp from 'jimp';
 
 const { Dragger } = Upload;
 //https://stackoverflow.com/questions/3590058/does-html5-allow-drag-drop-upload-of-folders-or-a-folder-tree
@@ -24,22 +23,14 @@ export default function LoadFileContent() {
     const props : UploadProps = {
         name: 'file',
         multiple: true,
-        action: 'http://local',
         onChange(info: UploadChangeParam)  {
-          const { status } = info.file;
-          if (status !== 'uploading') {
-            console.log(info.file, info.fileList);
-          }
-          if (status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully.`);
-          } else if (status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-          }
+            console.log(
+                "Status", info.file.status,
+                "FileName", info.file.name,
+                "Date", info.file.lastModified || 0,
+                "Total Files", info.fileList.length
+            );
         },
-        beforeUpload(file: RcFile, FileList: RcFile[]) : boolean {
-            setFlist([...flist, file]);
-            return false;
-        }
     };
 
     let makeDirectoryUpload = (x: HTMLElement | null) => {
