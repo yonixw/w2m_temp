@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Breadcrumb, Space, Card, Button } from 'antd';
+import { Breadcrumb, Space, Card, Button, Slider } from 'antd';
 
 import { Upload, message, Radio } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
@@ -40,6 +40,7 @@ export default function LoadFileContent() {
         lineHeight: '30px',
     };
     const [imgSrc, setImgSrc] = useState("");
+    const [blur, setBlur] = useState(0);
 
     const props : UploadProps = {
         name: 'file',
@@ -68,20 +69,12 @@ export default function LoadFileContent() {
         }
         };
 
-    const LoadImage = () => {
-        let reader = new FileReader();
+    const LoadImage = async () => {
         let f = fileList[0];
-        reader.onloadend = async function () {
-            let imageB64 = reader.result as string;
-            //setImgSrc();
-
-            let buffer = new Buffer(imageB64.replace(/^data:image\/\w+;base64,/, ""),'base64');
-            let img = await Jimp.read(buffer);
-            img.greyscale().blur(100);
-            var greyScalestring = await img.getBase64Async(Jimp.MIME_PNG);
-            setImgSrc(greyScalestring);
-        }
-        reader.readAsDataURL(f.originFileObj || (f as unknown as File));
+        const hide = message.loading('Converting..', 0);
+        let result = await ImageJobs.grey(f.originFileObj || (f as unknown as File), blur);
+        setImgSrc(result);
+        hide()
     }
 
     const web1 = async () =>{
@@ -115,6 +108,8 @@ export default function LoadFileContent() {
                     
                 </Space>
                 <Button onClick={LoadImage}>Load Image</Button>
+                <Slider defaultValue={30} disabled={fileList.length == 0} min={0} max={25} 
+                   onChange={(e)=>{setBlur(e as number)}}  />
                 <Button onClick={web1}>WEbWorker</Button>
                 <img src={imgSrc} />
             </div>
